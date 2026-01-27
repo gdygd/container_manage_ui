@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './ContainerList.css';
+import ContainerInspect, { type InspectData } from './ContainerInspect';
 
 interface Container {
   id: string;
@@ -34,6 +35,9 @@ function ContainerList() {
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [inspectData, setInspectData] = useState<InspectData | null>(null);
+  const [inspectLoading, setInspectLoading] = useState(false);
+  const [inspectError, setInspectError] = useState<string | null>(null);
 
   // Fetch hosts list
   const fetchHosts = async () => {
@@ -167,6 +171,34 @@ function ContainerList() {
     }
   };
 
+  // Inspect container
+  const inspectContainer = async (containerId: string) => {
+    setInspectLoading(true);
+    setInspectError(null);
+    setInspectData(null);
+    try {
+      const response = await fetch(`/api/inspect2/${selectedHost}/${containerId}`, {
+        cache: 'no-store',
+        headers: { 'Accept': 'application/json' },
+      });
+      const result = await response.json();
+      if (result.success) {
+        setInspectData(result.data);
+      } else {
+        setInspectError(result.message || 'Failed to inspect container');
+      }
+    } catch (err) {
+      setInspectError('Failed to connect to server');
+    } finally {
+      setInspectLoading(false);
+    }
+  };
+
+  const closeInspect = () => {
+    setInspectData(null);
+    setInspectError(null);
+  };
+
   return (
     <div className="container-list">
       <div className="list-header">
@@ -257,7 +289,10 @@ function ContainerList() {
               >
                 {actionLoading === container.id ? 'Stopping...' : 'Stop'}
               </button>
-              <button className="action-btn inspect">
+              <button
+                className="action-btn inspect"
+                onClick={() => inspectContainer(container.id)}
+              >
                 Inspect
               </button>
             </div>
@@ -274,6 +309,15 @@ function ContainerList() {
       <div className="container-summary">
         Showing {filteredContainers.length} of {containers.length} containers
       </div>
+
+      {(inspectData || inspectLoading || inspectError) && (
+        <ContainerInspect
+          data={inspectData}
+          loading={inspectLoading}
+          error={inspectError}
+          onClose={closeInspect}
+        />
+      )}
     </div>
   );
 }
