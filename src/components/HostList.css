@@ -1,0 +1,162 @@
+.host-list {
+  background: #1a1a1a;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.host-list .list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.host-list .list-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.host-list .refresh-btn {
+  padding: 0.5rem 1rem;
+  background: #61dafb;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.host-list .refresh-btn:hover:not(:disabled) {
+  background: #4fa8c5;
+}
+
+.host-list .refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.host-list .error-message {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.host-list .list-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.host-list .table-header,
+.host-list .table-row {
+  display: grid;
+  grid-template-columns: 80px 180px 180px 100px 1fr;
+  gap: 1rem;
+  padding: 0.75rem;
+  align-items: center;
+}
+
+.host-list .table-header {
+  background: #2a2a2a;
+  border-radius: 4px;
+  font-weight: 600;
+  color: #61dafb;
+}
+
+.host-list .table-row {
+  background: #242424;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.host-list .table-row:hover {
+  background: #2a2a2a;
+}
+
+.host-list .status-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #666;
+}
+
+.host-list .status-indicator.online {
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+}
+
+.host-list .status-indicator.offline {
+  background: #ef4444;
+}
+
+.host-list .col-host {
+  font-weight: 600;
+  color: #fff;
+}
+
+.host-list .col-ip {
+  font-family: 'Monaco', 'Menlo', monospace;
+  color: #aaa;
+}
+
+.host-list .col-port {
+  font-family: 'Monaco', 'Menlo', monospace;
+  color: #61dafb;
+}
+
+.host-list .col-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.host-list .action-btn {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.host-list .action-btn.connect {
+  background: #22c55e;
+  color: #000;
+  border-color: #22c55e;
+}
+
+.host-list .action-btn.connect:hover {
+  background: #16a34a;
+}
+
+.host-list .action-btn.info {
+  background: transparent;
+  color: #61dafb;
+  border-color: #61dafb;
+}
+
+.host-list .action-btn.info:hover {
+  background: #61dafb;
+  color: #000;
+}
+
+.host-list .empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.host-list .host-summary {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #333;
+  color: #888;
+  font-size: 0.875rem;
+}
