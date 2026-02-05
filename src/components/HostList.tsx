@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './HostList.css';
+import { API_BASE_URL } from '../api/config';
 
 interface Host {
   host: string;
@@ -20,7 +21,7 @@ function HostList() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/hosts', {
+      const response = await fetch(`${API_BASE_URL}/docker/hosts`, {
         cache: 'no-store',
         headers: {
           'Accept': 'application/json',

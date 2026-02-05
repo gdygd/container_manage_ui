@@ -1,0 +1,41 @@
+완료
+-container list
+-start
+-stop
+-inspect
+
+todo
+-login
+-stat (sse)
+-resource (ws)
+
+
+추후nginx배포
+프록시 설정
+ > /api/hosts 요청 → Nginx가 http://192.168.2.119:9081/hosts로 프록시
+server {
+    listen 80;
+    server_name your-domain.com;
+
+    # React 빌드 파일 서빙
+    root /var/www/container_manage_ui/dist;
+    index index.html;
+
+    # SPA 라우팅 처리
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # API 프록시 (/api → 백엔드)
+    location /api/ {
+        proxy_pass http://192.168.2.119:9081/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+
+배포 순서:
+
+npm run build → dist/ 폴더 생성
+dist/ 폴더를 서버의 /var/www/container_manage_ui/dist에 복사
+Nginx 설정 후 재시작

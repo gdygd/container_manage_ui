@@ -6,12 +6,26 @@ import ContainerDetail from './components/ContainerDetail';
 import ContainerStats from './components/ContainerStats';
 import EventStream from './components/EventStream';
 import HostList from './components/HostList';
+import Login from './components/Login';
+import Register from './components/Register';
+import { useAuth } from './contexts/AuthContext';
 
 type View = 'containers' | 'stats' | 'events' | 'hosts' | 'detail';
+type AuthView = 'login' | 'register';
 
 function App() {
+  const { isAuthenticated } = useAuth();
   const [currentView, setCurrentView] = useState<View>('containers');
   const [showDetail, setShowDetail] = useState(false);
+  const [authView, setAuthView] = useState<AuthView>('login');
+
+  if (!isAuthenticated) {
+    return authView === 'login' ? (
+      <Login onSwitchToRegister={() => setAuthView('register')} />
+    ) : (
+      <Register onSwitchToLogin={() => setAuthView('login')} />
+    );
+  }
 
   return (
     <div className="app">

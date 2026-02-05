@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './ContainerList.css';
 import ContainerInspect, { type InspectData } from './ContainerInspect';
+import { API_BASE_URL } from '../api/config';
 
 interface Container {
   id: string;
@@ -42,7 +43,7 @@ function ContainerList() {
   // Fetch hosts list
   const fetchHosts = async () => {
     try {
-      const response = await fetch('/api/hosts', {
+      const response = await fetch(`${API_BASE_URL}/docker/hosts`, {
         cache: 'no-store',
         headers: { 'Accept': 'application/json' },
       });
@@ -63,7 +64,7 @@ function ContainerList() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/ps2/${selectedHost}`, {
+      const response = await fetch(`${API_BASE_URL}/docker/ps2/${selectedHost}`, {
         cache: 'no-store',
         headers: { 'Accept': 'application/json' },
       });
@@ -114,7 +115,7 @@ function ContainerList() {
     setActionLoading(containerId);
     setError(null);
     try {
-      const response = await fetch('/api/start2', {
+      const response = await fetch(`${API_BASE_URL}/docker/start2`, {
         method: 'POST',
         cache: 'no-store',
         headers: {
@@ -145,7 +146,7 @@ function ContainerList() {
     setActionLoading(containerId);
     setError(null);
     try {
-      const response = await fetch('/api/stop2', {
+      const response = await fetch(`${API_BASE_URL}/docker/stop2`, {
         method: 'POST',
         cache: 'no-store',
         headers: {
@@ -177,7 +178,7 @@ function ContainerList() {
     setInspectError(null);
     setInspectData(null);
     try {
-      const response = await fetch(`/api/inspect2/${selectedHost}/${containerId}`, {
+      const response = await fetch(`${API_BASE_URL}/docker/inspect2/${selectedHost}/${containerId}`, {
         cache: 'no-store',
         headers: { 'Accept': 'application/json' },
       });
