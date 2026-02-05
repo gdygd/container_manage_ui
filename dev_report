@@ -1,0 +1,37 @@
+260205
+코드 리팩토링
+-React Query	@tanstack/react-query 설치 및 적용
+-Zustand	전역 상태 관리 (auth, events, app store)
+-Tailwind CSS	@tailwindcss/vite v4 설치 및 설정
+-React Router	react-router-dom v7 설치 및 라우팅 구현
+
+
+디렉토리 구조변경
+src/
+ ├─ app/                 # 앱 전역 설정
+ │   ├─ router.tsx       # React Router 설정
+ │   ├─ queryClient.ts   # React Query 설정
+ │   └─ store.ts         # Zustand UI store
+ │
+ ├─ api/                 # 공통 HTTP 레이어
+ │   ├─ http.ts          # fetch 래퍼
+ │   └─ error.ts         # 에러 처리
+ │
+ ├─ features/            # 도메인 단위 코드
+ │   ├─ auth/            # 인증 (api, hooks, types, components)
+ │   ├─ containers/      # 컨테이너 관리
+ │   ├─ hosts/           # 호스트 관리
+ │   └─ events/          # 이벤트 스트림 (SSE)
+ │
+ ├─ pages/               # 라우트 단위 페이지
+ ├─ styles/              # 전역 스타일 (Tailwind)
+ ├─ types/               # 전역 공통 타입
+ ├─ utils/               # 순수 유틸 함수
+ └─ main.tsx             # 엔트리 포인트
+
+Coding Conventions 적용
+-TypeScript: any 미사용, 모든 API 응답 타입 정의
+-React: 함수형 컴포넌트, Custom Hook으로 비즈니스 로직 분리
+-API Usage: src/api/http.ts에서만 HTTP 호출, 컴포넌트에서 직접 fetch 금지
+-Real-time: useEventStream Hook으로 SSE 관리, 타입별 명확한 정의
+-Security: 환경 변수(VITE_API_URL)로 설정 관리
