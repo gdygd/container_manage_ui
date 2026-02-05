@@ -5,3 +5,4 @@ export { ContainerList } from './components/ContainerList';
 export { ContainerInspect } from './components/ContainerInspect';
 export { ContainerStats } from './components/ContainerStats';
 export { ContainerDetail } from './components/ContainerDetail';
+export { StatsTrendChart } from './components/StatsTrendChart';

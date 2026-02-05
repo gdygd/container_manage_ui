@@ -7,5 +7,6 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
+| #98 | 5:36 PM | 🔄 | Migrated ContainerStats Component to Feature Architecture | ~346 |
 | #96 | 5:35 PM | 🔄 | Migrated ContainerInspect Component to Feature Architecture | ~357 |
 </claude-mem-context>

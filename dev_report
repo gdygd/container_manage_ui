@@ -35,3 +35,15 @@ Coding Conventions 적용
 -API Usage: src/api/http.ts에서만 HTTP 호출, 컴포넌트에서 직접 fetch 금지
 -Real-time: useEventStream Hook으로 SSE 관리, 타입별 명확한 정의
 -Security: 환경 변수(VITE_API_URL)로 설정 관리
+
+
+*Resource 구현
+-GET /docker/stat3/{host} API 연동 
+-테이블 조회
+상태	이름	CPU	MEM	MEM %	NET RX / TX
+🟢/⚪	container_name	0.01%	53 MiB	1.35%	325K / 367K
+
+-추세 그래프 (테스트 데이터)
+-컨테이너 클릭 시 하단에 CPU/Memory 추세 차트 표시
+-시간 범위: 1 Hour, 30 Min, 10 Min, 1 Min 선택 가능
+-ECharts 기반 그래프 (샘플 데이터)

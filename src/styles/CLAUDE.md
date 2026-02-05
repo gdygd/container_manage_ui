@@ -7,5 +7,7 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
+| #138 | 10:02 PM | ✅ | Extended Global Styles for Statistics Table and Trend Chart | ~359 |
+| #137 | " | 🟣 | Integrated Tailwind CSS v4 with Custom Theme Variables | ~417 |
 | #110 | 5:41 PM | 🟣 | Global Styles with Tailwind CSS and Design System | ~433 |
 </claude-mem-context>

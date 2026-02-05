@@ -77,15 +77,30 @@ export interface ContainerActionRequest {
   host: string;
 }
 
-export interface ContainerStats {
+export interface ContainerStat {
   id: string;
   name: string;
-  cpuPercent: number;
-  memoryUsage: string;
-  memoryLimit: string;
-  memoryPercent: number;
-  networkRx: string;
-  networkTx: string;
-  blockRead: string;
-  blockWrite: string;
+  cpu_percent: number;
+  memory_usage: string;
+  memory_limit: string;
+  memory_percent: number;
+  network_rx: string;
+  network_tx: string;
 }
+
+export interface ContainerStatsResponse {
+  success: boolean;
+  data: Record<string, ContainerStat>;
+}
+
+export type StatsSortField = 'name' | 'cpu_percent' | 'memory_usage' | 'memory_percent' | 'network';
+export type SortDirection = 'asc' | 'desc';
+export type StatsFilter = 'all' | 'running';
+
+export interface TrendDataPoint {
+  time: string;
+  cpu: number;
+  memory: number;
+}
+
+export type TrendTimeRange = '1h' | '30m' | '10m' | '1m';

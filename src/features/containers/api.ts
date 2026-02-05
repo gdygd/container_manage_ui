@@ -1,6 +1,6 @@
 import { http } from '../../api/http';
 import type { ApiResponse } from '../../types';
-import type { Container, InspectData, ContainerActionRequest } from './types';
+import type { Container, InspectData, ContainerActionRequest, ContainerStatsResponse } from './types';
 
 export const containersApi = {
   getContainers: (host: string) =>
@@ -14,4 +14,7 @@ export const containersApi = {
 
   inspectContainer: (host: string, containerId: string) =>
     http.get<ApiResponse<InspectData>>(`/docker/inspect2/${host}/${containerId}`),
+
+  getStats: (host: string) =>
+    http.get<ContainerStatsResponse>(`/docker/stat3/${host}`),
 };

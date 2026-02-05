@@ -8,6 +8,8 @@ export const containerKeys = {
   list: (host: string) => [...containerKeys.lists(), host] as const,
   details: () => [...containerKeys.all, 'detail'] as const,
   detail: (host: string, id: string) => [...containerKeys.details(), host, id] as const,
+  stats: () => [...containerKeys.all, 'stats'] as const,
+  stat: (host: string) => [...containerKeys.stats(), host] as const,
 };
 
 export function useContainers(host: string) {
@@ -47,5 +49,18 @@ export function useStopContainer() {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: containerKeys.list(variables.host) });
     },
+  });
+}
+
+export function useContainerStats(host: string, refetchInterval?: number) {
+  return useQuery({
+    queryKey: containerKeys.stat(host),
+    queryFn: () => containersApi.getStats(host),
+    enabled: !!host,
+    select: (data) => {
+      if (!data.data) return [];
+      return Object.values(data.data);
+    },
+    refetchInterval: refetchInterval ?? 5000,
   });
 }

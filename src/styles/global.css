@@ -1723,3 +1723,168 @@ code {
     padding: 1rem;
   }
 }
+
+/* Stats Table Styles */
+.stats-table {
+  background: var(--color-surface-light);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.stats-table-header {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px 100px 80px 150px;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--color-surface-lighter);
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 0.875rem;
+}
+
+.stats-table-body {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.stats-table-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px 100px 80px 150px;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 0.875rem;
+}
+
+.stats-table-row:hover {
+  background: var(--color-surface-lighter);
+}
+
+.stats-table-row.selected {
+  background: rgba(97, 218, 251, 0.1);
+  border-left: 3px solid var(--color-primary);
+}
+
+.stats-table-row:last-child {
+  border-bottom: none;
+}
+
+.stats-table-header .sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.stats-table-header .sortable:hover {
+  color: var(--color-text);
+}
+
+.stats-table-header .sortable.active {
+  color: var(--color-primary);
+}
+
+.col-status {
+  text-align: center;
+}
+
+.status-icon {
+  font-size: 0.875rem;
+}
+
+.col-name {
+  font-weight: 500;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.col-cpu,
+.col-mem,
+.col-mem-pct {
+  text-align: right;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.col-network {
+  text-align: right;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 0.75rem;
+  color: var(--color-text-subtle);
+}
+
+.stats-summary {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-subtle);
+  font-size: 0.875rem;
+}
+
+/* Trend Section Styles */
+.trend-section {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: var(--color-surface-light);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.trend-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.trend-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--color-text);
+}
+
+.time-range-selector {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.time-btn {
+  padding: 0.4rem 0.75rem;
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border-light);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+
+.time-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.time-btn.active {
+  background: var(--color-primary);
+  color: #000;
+  border-color: var(--color-primary);
+  font-weight: 600;
+}
+
+.trend-chart-container {
+  position: relative;
+}
+
+.chart-note {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-text-dim);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
