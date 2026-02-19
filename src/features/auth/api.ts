@@ -9,7 +9,7 @@ import type {
 
 export const authApi = {
   login: (data: LoginRequest) =>
-    http.post<LoginResponse>('/auth/login', data),
+      http.post<LoginResponse>('/auth/login', data),  
 
   logout: (data: LogoutRequest) =>
     http.post<void>('/auth/logout', data),
