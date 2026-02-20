@@ -39,3 +39,18 @@ server {
 npm run build → dist/ 폴더 생성
 dist/ 폴더를 서버의 /var/www/container_manage_ui/dist에 복사
 Nginx 설정 후 재시작
+
+http헤더에 토큰추가
+refrshtoken 요청 
+ > 401 발생 시 refresh?
+   *사용자 경험 (401안느끼게)
+    :API 요청
+    :401 응답 (Access 만료)
+    :백그라운드에서 refresh 요청
+    :새 access token 발급
+    :원래 요청 자동 재시도
+
+    ::refresh 실패 시에만 로그아웃
+    :: 사용자는 절대 401을 보지 않게 하기
+
+> 만료 시간 기준 사전 갱신?
