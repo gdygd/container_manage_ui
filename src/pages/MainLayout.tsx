@@ -1,13 +1,8 @@
-import { useEffect } from 'react';
-import { Outlet, useNavigate, NavLink } from 'react-router-dom';
-import { useAuthStore } from '../features/auth/hooks';
+import { Outlet, NavLink } from 'react-router-dom';
+import { useAuth } from '../features/auth/hooks';
 
 function Header() {
-  const { user, clearAuth } = useAuthStore();
-
-  const handleLogout = () => {
-    clearAuth();
-  };
+  const { user, logout, isLoggingOut } = useAuth();
 
   return (
     <header className="header">
@@ -15,12 +10,10 @@ function Header() {
         <h1 className="header-title">Container Manager</h1>
         <div className="header-right">
           {user && (
-            <span className="user-info">
-              {user.username}
-            </span>
+            <span className="user-info">{user.username}</span>
           )}
-          <button className="logout-btn" onClick={handleLogout}>
-            Logout
+          <button className="logout-btn" onClick={() => logout()} disabled={isLoggingOut}>
+            {isLoggingOut ? 'Logging out...' : 'Logout'}
           </button>
         </div>
       </div>
@@ -29,19 +22,6 @@ function Header() {
 }
 
 export function MainLayout() {
-  const { isAuthenticated } = useAuthStore();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-    }
-  }, [isAuthenticated, navigate]);
-
-  if (!isAuthenticated) {
-    return null;
-  }
-
   return (
     <div className="app">
       <Header />

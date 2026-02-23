@@ -53,4 +53,21 @@ refrshtoken 요청
     ::refresh 실패 시에만 로그아웃
     :: 사용자는 절대 401을 보지 않게 하기
 
+    로그인
+    ↓
+    Access → 메모리 저장
+    Refresh → HttpOnly 쿠키 저장
+
+    API 요청
+    ↓
+    Authorization: Bearer accessToken
+
+    Access 만료
+    ↓
+    /auth/refresh 호출 (credentials: include)
+    ↓
+    브라우저가 refresh 쿠키 자동 전송
+    ↓
+    새 access 발급
+    
 > 만료 시간 기준 사전 갱신?

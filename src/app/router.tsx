@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import { MainLayout } from '../pages/MainLayout';
 import { LoginPage } from '../pages/LoginPage';
 import { RegisterPage } from '../pages/RegisterPage';
@@ -6,39 +6,70 @@ import { ContainersPage } from '../pages/ContainersPage';
 import { StatsPage } from '../pages/StatsPage';
 import { EventsPage } from '../pages/EventsPage';
 import { HostsPage } from '../pages/HostsPage';
+import { useAuthStore } from '../features/auth/store';
+
+function ProtectedRoute() {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <Outlet />;
+}
+
+function PublicOnlyRoute() {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  if (isAuthenticated) {
+    return <Navigate to="/containers" replace />;
+  }
+
+  return <Outlet />;
+}
 
 export const router = createBrowserRouter([
   {
-    path: '/login',
-    element: <LoginPage />,
-  },
-  {
-    path: '/register',
-    element: <RegisterPage />,
-  },
-  {
-    path: '/',
-    element: <MainLayout />,
+    element: <PublicOnlyRoute />,
     children: [
       {
-        index: true,
-        element: <Navigate to="/containers" replace />,
+        path: '/login',
+        element: <LoginPage />,
       },
       {
-        path: 'containers',
-        element: <ContainersPage />,
+        path: '/register',
+        element: <RegisterPage />,
       },
+    ],
+  },
+  {
+    element: <ProtectedRoute />,
+    children: [
       {
-        path: 'stats',
-        element: <StatsPage />,
-      },
-      {
-        path: 'events',
-        element: <EventsPage />,
-      },
-      {
-        path: 'hosts',
-        element: <HostsPage />,
+        path: '/',
+        element: <MainLayout />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="/containers" replace />,
+          },
+          {
+            path: 'containers',
+            element: <ContainersPage />,
+          },
+          {
+            path: 'stats',
+            element: <StatsPage />,
+          },
+          {
+            path: 'events',
+            element: <EventsPage />,
+          },
+          {
+            path: 'hosts',
+            element: <HostsPage />,
+          },
+        ],
       },
     ],
   },

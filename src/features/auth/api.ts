@@ -5,15 +5,20 @@ import type {
   RegisterRequest,
   RegisterResponse,
   LogoutRequest,
+  RenewAccessTokenRequest,
+  RenewAccessTokenResponse,
 } from './types';
 
 export const authApi = {
   login: (data: LoginRequest) =>
-      http.post<LoginResponse>('/auth/login', data),  
+    http.post<LoginResponse>('/auth/login', data, { skipAuth: true }),
 
   logout: (data: LogoutRequest) =>
     http.post<void>('/auth/logout', data),
 
   register: (data: RegisterRequest) =>
-    http.post<RegisterResponse>('/auth/user', data),
+    http.post<RegisterResponse>('/auth/user', data, { skipAuth: true }),
+
+  renewAccessToken: (data: RenewAccessTokenRequest) =>
+    http.post<RenewAccessTokenResponse>('/auth/renew-access', data, { skipAuth: true }),
 };

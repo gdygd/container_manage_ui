@@ -1,19 +1,28 @@
 import { ApiRequestError } from './error';
+import { useAuthStore } from '../features/auth/store';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 interface RequestOptions extends Omit<RequestInit, 'body'> {
   body?: unknown;
+  skipAuth?: boolean;
 }
 
 async function request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
-  const { body, headers: customHeaders, ...restOptions } = options;
+  const { body, headers: customHeaders, skipAuth = false, ...restOptions } = options;
 
-  const headers: HeadersInit = {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    ...customHeaders,
+    ...(customHeaders as Record<string, string>),
   };
+
+  if (!skipAuth) {
+    const token = useAuthStore.getState().accessToken;
+    if (token) {
+      headers['authorization'] = `Bearer ${token}`;
+    }
+  }
 
   const config: RequestInit = {
     ...restOptions,
@@ -31,6 +40,10 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
     const response = await fetch(url, config);
 
     if (!response.ok) {
+      if (response.status === 401 && !skipAuth) {
+        useAuthStore.getState().clearAuth();
+      }
+
       const errorData = await response.json().catch(() => ({}));
       throw new ApiRequestError(
         errorData.message || `Request failed with status ${response.status}`,

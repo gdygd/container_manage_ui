@@ -41,3 +41,12 @@ export interface RegisterResponse {
 export interface LogoutRequest {
   refresh_token: string;
 }
+
+export interface RenewAccessTokenRequest {
+  refresh_token: string;
+}
+
+export interface RenewAccessTokenResponse {
+  access_token: string;
+  access_token_expires_at: string;
+}

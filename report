@@ -1,0 +1,12 @@
+260223
+*토큰 관리
+-api요청할때 header에 authorization key access token 추가 (Bearer Token)
+-AuthProvider 패턴
+-액세스 토큰 in memory
+-refresh token은 cookie로
+
+*로그인상태
+-401시 자동 로그아웃
+-로그인 상태정보 관리(Zustand)
+-로그인 상태를 확인해 보호된 페이지 접근 제어(회원가입, 로그인을 제외한 다른 페이지 접근 제한)
+
