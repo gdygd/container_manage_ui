@@ -20,5 +20,5 @@ export const authApi = {
     http.post<RegisterResponse>('/auth/user', data, { skipAuth: true }),
 
   renewAccessToken: (data: RenewAccessTokenRequest) =>
-    http.post<RenewAccessTokenResponse>('/auth/renew-access', data, { skipAuth: true }),
+    http.post<RenewAccessTokenResponse>('/auth/token/renew_access', data, { skipAuth: true }),
 };

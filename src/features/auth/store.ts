@@ -40,8 +40,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       // accessToken은 in-memory만 → persist 제외
       partialize: (state) => ({
         isAuthenticated: state.isAuthenticated,
-        user: state.user,
-        refreshToken: state.refreshToken,
+        user: state.user,        
       }),
     }
   )
