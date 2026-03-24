@@ -5,27 +5,27 @@ import type { ContainerActionRequest } from './types';
 export const containerKeys = {
   all: ['containers'] as const,
   lists: () => [...containerKeys.all, 'list'] as const,
-  list: (host: string) => [...containerKeys.lists(), host] as const,
+  list: (hostId: number) => [...containerKeys.lists(), hostId] as const,
   details: () => [...containerKeys.all, 'detail'] as const,
-  detail: (host: string, id: string) => [...containerKeys.details(), host, id] as const,
+  detail: (hostId: number, id: string) => [...containerKeys.details(), hostId, id] as const,
   stats: () => [...containerKeys.all, 'stats'] as const,
-  stat: (host: string) => [...containerKeys.stats(), host] as const,
+  stat: (hostId: number) => [...containerKeys.stats(), hostId] as const,
 };
 
-export function useContainers(host: string) {
+export function useContainers(hostId: number | null) {
   return useQuery({
-    queryKey: containerKeys.list(host),
-    queryFn: () => containersApi.getContainers(host),
-    enabled: !!host,
+    queryKey: containerKeys.list(hostId ?? 0),
+    queryFn: () => containersApi.getContainers(hostId!),
+    enabled: hostId !== null,
     select: (data) => data.data,
   });
 }
 
-export function useContainerInspect(host: string, containerId: string | null) {
+export function useContainerInspect(hostId: number | null, containerId: string | null) {
   return useQuery({
-    queryKey: containerKeys.detail(host, containerId ?? ''),
-    queryFn: () => containersApi.inspectContainer(host, containerId!),
-    enabled: !!host && !!containerId,
+    queryKey: containerKeys.detail(hostId ?? 0, containerId ?? ''),
+    queryFn: () => containersApi.inspectContainer(hostId!, containerId!),
+    enabled: hostId !== null && !!containerId,
     select: (data) => data.data,
   });
 }
@@ -36,7 +36,7 @@ export function useStartContainer() {
   return useMutation({
     mutationFn: (data: ContainerActionRequest) => containersApi.startContainer(data),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: containerKeys.list(variables.host) });
+      queryClient.invalidateQueries({ queryKey: containerKeys.list(variables.hostId) });
     },
   });
 }
@@ -47,16 +47,16 @@ export function useStopContainer() {
   return useMutation({
     mutationFn: (data: ContainerActionRequest) => containersApi.stopContainer(data),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: containerKeys.list(variables.host) });
+      queryClient.invalidateQueries({ queryKey: containerKeys.list(variables.hostId) });
     },
   });
 }
 
-export function useContainerStats(host: string, refetchInterval?: number) {
+export function useContainerStats(hostId: number | null, refetchInterval?: number) {
   return useQuery({
-    queryKey: containerKeys.stat(host),
-    queryFn: () => containersApi.getStats(host),
-    enabled: !!host,
+    queryKey: containerKeys.stat(hostId ?? 0),
+    queryFn: () => containersApi.getStats(hostId!),
+    enabled: hostId !== null,
     select: (data) => {
       if (!data.data) return [];
       return Object.values(data.data);

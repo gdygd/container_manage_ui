@@ -74,7 +74,7 @@ export interface InspectData {
 
 export interface ContainerActionRequest {
   id: string;
-  host: string;
+  hostId: number;
 }
 
 export interface ContainerStat {

@@ -42,7 +42,7 @@ function isContainerRunning(stat: ContainerStat): boolean {
 }
 
 export function ContainerStats() {
-  const [selectedHost, setSelectedHost] = useState<string>('');
+  const [selectedHostId, setSelectedHostId] = useState<number | null>(null);
   const [sortField, setSortField] = useState<StatsSortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [filter, setFilter] = useState<StatsFilter>('all');
@@ -52,17 +52,17 @@ export function ContainerStats() {
 
   const { data: hosts = [] } = useHosts();
   const { data: stats = [], isLoading, error, refetch } = useContainerStats(
-    selectedHost,
+    selectedHostId,
     autoRefresh ? 5000 : undefined
   );
 
-  const handleHostChange = useCallback((host: string) => {
-    setSelectedHost(host);
+  const handleHostChange = useCallback((hostId: number) => {
+    setSelectedHostId(hostId);
     setSelectedContainer(null);
   }, []);
 
-  if (hosts.length > 0 && !selectedHost) {
-    handleHostChange(hosts[0].host);
+  if (hosts.length > 0 && selectedHostId === null) {
+    handleHostChange(hosts[0].id);
   }
 
   const handleSort = (field: StatsSortField) => {
@@ -128,11 +128,11 @@ export function ContainerStats() {
         <div className="header-controls">
           <select
             className="host-select"
-            value={selectedHost}
-            onChange={(e) => handleHostChange(e.target.value)}
+            value={selectedHostId ?? ''}
+            onChange={(e) => handleHostChange(Number(e.target.value))}
           >
             {hosts.map((host) => (
-              <option key={host.host} value={host.host}>
+              <option key={host.id} value={host.id}>
                 {host.host}
               </option>
             ))}

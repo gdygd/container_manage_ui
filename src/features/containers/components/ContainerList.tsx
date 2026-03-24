@@ -18,25 +18,25 @@ function getStateClass(state: string): string {
 }
 
 export function ContainerList() {
-  const [selectedHost, setSelectedHost] = useState<string>('');
+  const [selectedHostId, setSelectedHostId] = useState<number | null>(null);
   const [stateFilter, setStateFilter] = useState<StateFilter>('all');
   const [inspectContainerId, setInspectContainerId] = useState<string | null>(null);
 
   const { data: hosts = [] } = useHosts();
-  const { data: containers = [], isLoading, error, refetch } = useContainers(selectedHost);
+  const { data: containers = [], isLoading, error, refetch } = useContainers(selectedHostId);
   const { data: inspectData, isLoading: inspectLoading, error: inspectError } = useContainerInspect(
-    selectedHost,
+    selectedHostId,
     inspectContainerId
   );
   const startMutation = useStartContainer();
   const stopMutation = useStopContainer();
 
-  const handleHostChange = useCallback((host: string) => {
-    setSelectedHost(host);
+  const handleHostChange = useCallback((hostId: number) => {
+    setSelectedHostId(hostId);
   }, []);
 
-  if (hosts.length > 0 && !selectedHost) {
-    handleHostChange(hosts[0].host);
+  if (hosts.length > 0 && selectedHostId === null) {
+    handleHostChange(hosts[0].id);
   }
 
   const filteredContainers = useMemo(() => {
@@ -51,11 +51,11 @@ export function ContainerList() {
   }), [containers]);
 
   const handleStart = async (containerId: string) => {
-    await startMutation.mutateAsync({ id: containerId, host: selectedHost });
+    await startMutation.mutateAsync({ id: containerId, hostId: selectedHostId! });
   };
 
   const handleStop = async (containerId: string) => {
-    await stopMutation.mutateAsync({ id: containerId, host: selectedHost });
+    await stopMutation.mutateAsync({ id: containerId, hostId: selectedHostId! });
   };
 
   const closeInspect = () => {
@@ -73,11 +73,11 @@ export function ContainerList() {
         <div className="header-controls">
           <select
             className="host-select"
-            value={selectedHost}
-            onChange={(e) => handleHostChange(e.target.value)}
+            value={selectedHostId ?? ''}
+            onChange={(e) => handleHostChange(Number(e.target.value))}
           >
             {hosts.map((host) => (
-              <option key={host.host} value={host.host}>
+              <option key={host.id} value={host.id}>
                 {host.host}
               </option>
             ))}

@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 import { create } from 'zustand';
 import type { DockerEvent } from './types';
 import { API_BASE_URL } from '../../api/http';
+import { useAuthStore } from '../auth/store';
 
 const MAX_EVENTS = 500;
 
@@ -32,7 +33,7 @@ export const useEventStore = create<EventState & EventActions>((set) => ({
 export function useEventStream() {
   const eventSourceRef = useRef<EventSource | null>(null);
   const eventIdRef = useRef(0);
-  const { addEvent, clearEvents, setConnected, events, isConnected } = useEventStore();
+  const { clearEvents, events, isConnected } = useEventStore();
   const [isPaused, setIsPaused] = useState(false);
   const [pausedEvents, setPausedEvents] = useState<DockerEvent[]>([]);
 
@@ -41,15 +42,17 @@ export function useEventStream() {
       eventSourceRef.current.close();
     }
 
-    const url = `${API_BASE_URL}/docker-sse/events`;
+    const token = useAuthStore.getState().accessToken;
+    const url = `${API_BASE_URL}/docker-sse/events?token=${token}`;
     const eventSource = new EventSource(url);
     eventSourceRef.current = eventSource;
 
     eventSource.onopen = () => {
-      setConnected(true);
+      useEventStore.getState().setConnected(true);
     };
 
     eventSource.addEventListener('container-event', (e) => {
+      console.log("sse event", e)
       try {
         const data = JSON.parse(e.data);
         const newEvent: DockerEvent = {
@@ -62,24 +65,24 @@ export function useEventStream() {
           timestamp: data.timestamp,
           attrs: data.attrs || {},
         };
-        addEvent(newEvent);
+        useEventStore.getState().addEvent(newEvent);
       } catch (err) {
         console.error('[SSE] Failed to parse event:', err);
       }
     });
 
     eventSource.onerror = () => {
-      setConnected(false);
+      useEventStore.getState().setConnected(false);
     };
-  }, [addEvent, setConnected]);
+  }, []);
 
   const disconnect = useCallback(() => {
     if (eventSourceRef.current) {
       eventSourceRef.current.close();
       eventSourceRef.current = null;
-      setConnected(false);
+      useEventStore.getState().setConnected(false);
     }
-  }, [setConnected]);
+  }, []);
 
   const handlePause = useCallback(() => {
     if (!isPaused) {
