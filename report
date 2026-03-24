@@ -13,30 +13,11 @@
 260224
 -auth store에서 refresh token제외
 
-
 20260324
 hosts/types.ts - id 필드 추가
-hosts/store.ts - 신규 Zustand store 생성
-hosts/hooks.ts - 호스트 데이터 store에 sync
+hosts/store.ts - 신규 Zustand store 생성 (useHostsStore)
+hosts/hooks.ts - 호스트 데이터 store에 sync (useHosts에서 fetch 후 store에 setHosts sync)
 hosts/index.ts - store export 추가
 containers/api.ts - host: string → hostId: number
-containers/hooks.ts - 동일
-ContainerList.tsx / ContainerStats.tsx - selectedHostId 사용
-
-모든 수정이 완료됐습니다. 변경 내용 요약:
-
-수정된 파일 목록:
-
-파일	변경 내용
-hosts/types.ts	Host 인터페이스에 id: number 필드 추가
-hosts/store.ts	신규 생성 - useHostsStore (hosts 데이터 저장)
-hosts/hooks.ts	useHosts에서 fetch 후 store에 setHosts sync
-hosts/index.ts	store export 추가
-containers/types.ts	ContainerActionRequest.host: string → hostId: number
-containers/api.ts	GET 3개 함수 파라미터 host: string → hostId: number, URL 경로에 id 사용
-containers/hooks.ts	전체 훅 파라미터 및 query key를 hostId: number 기준으로 변경
-ContainerList.tsx	selectedHost: string → selectedHostId: number | null, select value/onChange 수정
-ContainerStats.tsx	동일
-
 Event stream 뷰에서 sse 요청할때 query parameter에 토큰추가
  > /events?token=${token}
