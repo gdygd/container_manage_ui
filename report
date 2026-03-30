@@ -21,3 +21,9 @@ hosts/index.ts - store export 추가
 containers/api.ts - host: string → hostId: number
 Event stream 뷰에서 sse 요청할때 query parameter에 토큰추가
  > /events?token=${token}
+
+20260330
+-.env 운영모드 추가 (local | aws)
+- container api 운영모드에 따라 요청 분기 추가
+- hosts api 운영모드에 따라 요청 분기 추가
+
